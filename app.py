@@ -39,7 +39,6 @@ swagger = Swagger(app, template={
     "basePath": "/",
 })
 
-
 def fetch_url_content(url):
     """
     Fetch the main content from a URL.
@@ -166,14 +165,14 @@ def edit_arabic_report():
 
 
         # Fetch URLs and content
-        #urls = fetch_urls(topic, perspective)
-        #url_contents = [fetch_url_content(url) for url in urls if fetch_url_content(url)]
         urls = fetch_urls(topic, perspective)
-        query = "Without any summarization, Retrieve all the content of the webpage in Arabic."
-        results = process_urls(urls, query)
+        url_contents = [fetch_url_content(url) for url in urls if fetch_url_content(url)]
+        #urls = fetch_urls(topic, perspective)
+        #query = "Without any summarization, Retrieve all the content of the webpage in Arabic."
+        #results = process_urls(urls, query)
 
         # Enrich prompt with URL contents
-        enriched_prompt = arabic_prompt + "\n\n" + "يرجى تضمين إحصائيات وتحليلات مفصلة في كل نقطة فرعية لذلك heading، وشرح وافٍ بالمحتوى العلمي مع تقسيم heading إلى أكثر من عنوان فرعي. استخدم البيانات التالية من المصادر لدعم المحتوى:\n\n" + "\n\n".join([json.dumps(result, ensure_ascii=False) for result in results])
+        enriched_prompt = arabic_prompt + "\n\n" + "يرجى تضمين إحصائيات وتحليلات مفصلة في كل نقطة فرعية لذلك heading، وشرح وافٍ بالمحتوى العلمي مع تقسيم heading إلى أكثر من عنوان فرعي. استخدم البيانات التالية من المصادر لدعم المحتوى:\n\n" + "\n\n".join(url_contents)
         conversation_history.append({
     "role": "system",
     "content": "You are a professional journalist tasked with writing a detailed informative and valuable Arabic article in JSON format. The output should contain detailed statistics and analysis for every point in a Specific heading as the input json will contain some headings and some points and your mission is to fill the content of each point in specific heading."
