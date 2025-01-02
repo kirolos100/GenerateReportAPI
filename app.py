@@ -40,28 +40,16 @@ swagger = Swagger(app, template={
 })
 
 def fetch_url_content(url):
-    """
-    Fetch the main content from a URL.
-    """
     try:
-        print(f"Fetching content from {url}...")
-        response = requests.get(url, timeout=10)  # Add a timeout for better control
-        response.raise_for_status()  # Check for HTTP errors
-        print(f"Fetched content from {url}")
+        response = requests.get(url)
+        response.raise_for_status()
         soup = BeautifulSoup(response.text, "html.parser")
+        # Extract the main content (this may vary depending on the structure of the webpage)
         return soup.get_text(separator="\n", strip=True)
-    except requests.exceptions.Timeout:
-        print(f"Timeout occurred while fetching {url}")
-        return None
-    except requests.exceptions.RequestException as e:
-        print(f"Request exception occurred: {e}")
-        return None
     except Exception as e:
         print(f"Error fetching content from {url}: {e}")
         return None
-
-
-
+    
 def fetch_urls(موضوع_التقرير, منظور_التقرير):
     """
     Fetch URLs based on موضوع التقرير and منظور التقرير using an external API.
@@ -146,7 +134,7 @@ def edit_arabic_report():
 
     استخرج موضوع المقال في جملة واحدة بناءً على النص، وحدد منظور التقرير من الخيارات التالية: [سياسي, إقتصادي, إجتماعي, تكنولوجي, بيئي, ثقافي, علمي, قانوني]. قدم الإجابة كالتالي:
     موضوع التقرير= <العنوان>
-    منظور التقرير= [<القيم اثنان فقط>]
+    منظور التقرير= [<القيم>]
     إجتماعي ,منظور التقرير يجب ان يحتوي على واحدة من  [سياسي, إقتصادي, إجتماعي, تكنولوجي, بيئي, ثقافي, علمي, قانوني] دون تغيير ولا كلمة و لاحظ مكان الهمزة في بعض الكلمات مثل : إقتصادي
 
     """
@@ -170,9 +158,9 @@ def edit_arabic_report():
         #urls = fetch_urls(topic, perspective)
         #query = "Without any summarization, Retrieve all the content of the webpage in Arabic."
         #results = process_urls(urls, query)
-
+        print(url_contents)
         # Enrich prompt with URL contents
-        enriched_prompt = arabic_prompt + "\n\n" + "يرجى تضمين إحصائيات وتحليلات مفصلة في كل نقطة فرعية لذلك heading، وشرح وافٍ بالمحتوى العلمي مع تقسيم heading إلى أكثر من عنوان فرعي. استخدم البيانات التالية من المصادر لدعم المحتوى:\n\n" + "\n\n".join(url_contents)
+        enriched_prompt = arabic_prompt + "\n\n" + "يرجى تضمين إحصائيات وتحليلات مفصلة في كل نقطة فرعية لذلك heading، وشرح وافٍ و مفصل و كثيف بالمحتوى مع تقسيم heading إلى أكثر من عنوان فرعي. استخدم  كل البيانات التالية دون اهمال احدهم من المصادر لدعم المحتوى:\n\n" + "\n\n".join(url_contents)
         conversation_history.append({
     "role": "system",
     "content": "You are a professional journalist tasked with writing a detailed informative and valuable Arabic article in JSON format. The output should contain detailed statistics and analysis for every point in a Specific heading as the input json will contain some headings and some points and your mission is to fill the content of each point in specific heading."
@@ -180,15 +168,15 @@ def edit_arabic_report():
 
         conversation_history.append({
     "role": "user",
-    "content": f"""قي نفس شكل ال JSON Formatبدون اي تغيير فيه, انا اريد الJson فقط بدون اي شروخات اضافية او في ال style قم بتحسين المقال التالي:\n{enriched_prompt}
+    "content": f"""
+    قي نفس شكل ال JSON Formatبدون اي تغيير فيه, انا اريد الJson فقط بدون اي شروخات اضافية او في ال style قم بتحسين المقال التالي:\n{enriched_prompt}
 قم بكتابة مقال كامل عن ذلك العنوان {arabic_prompt}
 ذلك عن طريق كتابة محتوى لكل نقطة موجودة في ذلك{input_json} headingو تابعة لل{arabic_prompt} فلا تقوم بنقص احدى النقاط بل قم بكتابة محتوها جميعها
-المحتوى يجب ان بكون مفصل و كثيف و بناء عن المصادر و يفضل ان كان هناك tables توضع و سضع تختها مصدرها و عنوان عنها 
+المحتوى يجب ان بكون مفصل و كثيف و بناء عن المصادر و يفضل اذا اختاج الامر مش شرط دائما ان كان هناك tables توضع و سضع تختها مصدرها و عنوان عنها 
 محتوى النقاط يجب ان يكتب ب HTML Tags
 الoutput json يجب ان يحتوي فقط على ذلك ال {arabic_prompt} بعد كتابة التقرير المفصل
 ال output يجب ان يكون في json 
-
-
+يجب ان كل  content يحتوي من اربع لخمس فقرات كبار و طوال مليئين بالتفاصيل الغنية 
 """
 
 })
