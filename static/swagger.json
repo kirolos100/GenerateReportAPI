@@ -5,9 +5,9 @@
     "title": "Arabic Report Editor API",
     "description": "An API to edit Arabic report JSONs using GPT-generated responses."
   },
-  "host": "localhost:5000",
+  "host": "generatereport-b3cxe2frencvekh5.eastus-01.azurewebsites.net",
   "basePath": "/",
-  "schemes": ["http"],
+  "schemes": ["https"],
   "paths": {
     "/generate-arabic-report": {
       "post": {
