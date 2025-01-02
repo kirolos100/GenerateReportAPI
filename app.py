@@ -38,7 +38,6 @@ swagger = Swagger(app, template={
     "host": "https://generatereport-b3cxe2frencvekh5.eastus-01.azurewebsites.net",
     "basePath": "/",
 })
-
 def fetch_url_content(url):
     try:
         response = requests.get(url)
