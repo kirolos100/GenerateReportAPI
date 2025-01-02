@@ -1,0 +1,81 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Arabic Report Editor API",
+    "description": "An API to edit Arabic report JSONs using GPT-generated responses."
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/generate-arabic-report": {
+      "post": {
+        "summary": "Edit Arabic Report JSON",
+        "description": "Edits an Arabic report JSON using a prompt for enhancements and updates.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "description": "Input JSON and Arabic prompt for editing.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "json_input": {
+                  "type": "string",
+                  "description": "The input JSON string to be edited."
+                },
+                "Heading_name": {
+                  "type": "string",
+                  "description": "Arabic heading describing the heading that the will apply on it."
+                }
+              },
+              "required": ["json_input", "Heading_name"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with the updated JSON.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "updated_json": {
+                  "type": "object",
+                  "description": "The updated JSON structure."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request due to missing or invalid input.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Error message."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "description": "Error message."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
