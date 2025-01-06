@@ -181,6 +181,9 @@ def edit_arabic_report():
 يجب ان تكون الاجابة في شكل JSON
 و ال output JSON headingيحمل التعديلات لذلك ال {arabic_prompt} 
 فانا لا اريد المقال بheadings بل اريد ال heading المطلوب فقط
+تاكد من كتابة ال HTML Tags بشكل صحيح
+تاكد اني اريد فقط ال JSON File
+تاكد اني اريد JSON صحيح بدون errors 
 """
 
 })
