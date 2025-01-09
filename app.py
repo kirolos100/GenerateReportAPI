@@ -159,7 +159,7 @@ def edit_arabic_report():
         #results = process_urls(urls, query)
         print(url_contents)
         # Enrich prompt with URL contents
-        enriched_prompt = arabic_prompt + "\n\n" + "يرجى تضمين إحصائيات وتحليلات مفصلة في كل نقطة فرعية لذلك heading، وشرح وافٍ و مفصل و كثيف بالمحتوى مع تقسيم heading إلى أكثر من عنوان فرعي. استخدم  كل البيانات التالية دون اهمال احدهم من المصادر لدعم المحتوى:\n\n" + "\n\n".join(url_contents)
+        enriched_prompt = arabic_prompt + "\n\n" + "يرجى تضمين إحصائيات وتحليلات مفصلة في كل نقطة فرعية لذلك heading، وشرح وافٍ و مفصل و كثيف بالمحتوى مع تقسيم heading إلى أكثر من عنوان فرعي. استخدم  كل البيانات و المصادر التالية دون اهمال احدهم من المصادر لدعم المحتوى:\n\n" + "\n\n".join(url_contents)
         conversation_history.append({
     "role": "system",
     "content": "You are a professional journalist tasked with writing a detailed informative and valuable Arabic article in JSON format. The output should contain detailed statistics and analysis for every point in a Specific heading as the input json will contain some headings and some points and your mission is to fill the content of each point in specific heading."
@@ -168,15 +168,17 @@ def edit_arabic_report():
         conversation_history.append({
     "role": "user",
     "content": f"""
-    قي نفس شكل ال JSON Formatبدون اي تغيير فيه, انا اريد الJson فقط بدون اي شروخات اضافية او في ال style قم بتحسين المقال التالي:\n{enriched_prompt}
+    قي نفس شكل ال JSON Formatبدون اي تغيير فيه, انا اريد الJson فقط بدون اي شروحات اضافية او في ال style قم بتحسين المقال التالي:\n{enriched_prompt}
 قم بكتابة مقال كامل عن ذلك العنوان {arabic_prompt}
 ذلك عن طريق كتابة محتوى لكل نقطة موجودة في ذلك{input_json} headingو تابعة لل{arabic_prompt} فلا تقوم بنقص احدى النقاط بل قم بكتابة محتوها جميعها
-المحتوى يجب ان بكون مفصل و كثيف و بناء عن المصادر و يفضل اذا اختاج الامر مش شرط دائما ان كان هناك tables توضع و سضع تختها مصدرها و عنوان عنها 
+المحتوى يجب ان يكون مفصل و كثيف و بناء عن المصادر و يفضل اذا احتاج الامر مش شرط دائما ان كان هناك tables توضع و سضع تحتها مصدرها و عنوان عنها 
 محتوى النقاط يجب ان يكتب ب HTML Tags
 الoutput json يجب ان يحتوي فقط على ذلك ال {arabic_prompt} بعد كتابة التقرير المفصل
 ال output يجب ان يكون في valid json
 انا لا اريد كتابة كلام في ال content بين "" لكن اريد بين ()
 يجب ان كل  content يحتوي من اربع لخمس فقرات كبار و طوال مليئين بالتفاصيل الغنية 
+برهن ودلل على المحتوى في الـ content بالمعلومات المستندة إلى المصادر، مع استخدام إحصائيات وأرقام مستخرجة منها. يمكنك أن تشير إلى المصدر بقول "حسب ذلك المصدر" ثم تقدم البرهان المناسب.
+لا تنسى ال tables اذا احتاج الامر في ال content
 أنا اريد فقط في الاجابة ال JSON file بدون اي شروحات اضافية
 يجب ان تكون الاجابة في شكل JSON
 و ال output JSON headingيحمل التعديلات لذلك ال {arabic_prompt} 
