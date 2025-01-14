@@ -227,7 +227,7 @@ def edit_arabic_report():
     - يبدأ وينتهي بـ "{" و"}".
     
                   
-ال headings  المفروض انها array of objects
+ال headings  المفروض انها one only array of objects
 و ال output JSON headingيحمل التعديلات لذلك ال {arabic_prompt} 
 فانا لا اريد المقال بheadings بل اريد ال heading المطلوب فقط
 تاكد من كتابة ال HTML Tags بشكل صحيح
