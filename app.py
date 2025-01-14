@@ -185,7 +185,7 @@ def edit_arabic_report():
         enriched_prompt = arabic_prompt + "\n\n" + "يرجى تضمين إحصائيات وتحليلات مفصلة في كل نقطة فرعية لذلك heading، وشرح وافٍ و مفصل و كثيف بالمحتوى مع تقسيم heading إلى أكثر من عنوان فرعي. استخدم  كل البيانات و المصادر التالية دون اهمال احدهم من المصادر لدعم المحتوى:\n\n" + "\n\n".join(url_contents)
         conversation_history.append({
     "role": "system",
-    "content": "You are a professional journalist tasked with writing a detailed informative and valuable Arabic article in JSON format. The output should contain detailed statistics and analysis for every point in a Specific heading as the input json will contain some headings and some points and your mission is to fill the content of each point in specific heading."
+    "content": "You are a professional journalist tasked with writing a detailed informative and valuable Arabic article in JSON format not in String Format. The output should contain detailed statistics and analysis for every point in a Specific heading as the input json will contain some headings and some points and your mission is to fill the content of each point in specific heading."
 })
 
         conversation_history.append({
@@ -231,12 +231,14 @@ def edit_arabic_report():
 و ال output JSON headingيحمل التعديلات لذلك ال {arabic_prompt} 
 فانا لا اريد المقال بheadings بل اريد ال heading المطلوب فقط
 تاكد من كتابة ال HTML Tags بشكل صحيح
+لا تنسى ال tables اذا احتاج الامر علو الاقل في نقطة واحدة في ال content
 تاكد اني اريد فقط ال JSON File بدون اي اضافات او شروحات
 تاكد اني اريد JSON صحيح بدون errors: 
 قم بتصحيح العلامة </p>> غير المتطابقة إلى </p> 
 إزالة المسافات الزائدة وإصلاح الأخطاء الإملائية في جميع الأقسام.
 تأكد من تنسيق كافة العلامات بشكل صحيح.
 أكمل محتوى لاي من النقاط أو قم بإزالة الجزء الناقص.
+قم بارجاع الناتج النهائي في شكل JSON Format و احذر ان ترجع ب String Format
 قم بإرجاع JSON صالح فقط بدون أي نصوص إضافية أو شروحات. يجب أن يبدأ الرد بـ "{" وينتهي بـ "}".
 """
 
