@@ -145,10 +145,33 @@ def edit_arabic_report():
             model="gpt-4o",
             messages=conversation_history
         ).choices[0].message.content
+        
+        if "موضوع التقرير=" not in llm_response or "منظور التقرير=" not in llm_response:
+           
+            prompt = f"""
+                المقال الحالي يتحدث عن:
+                {json.dumps(headings, ensure_ascii=False, indent=2)}
 
-        topic = llm_response.split("موضوع التقرير=")[1].split("\n")[0].strip()
-        perspective = llm_response.split("منظور التقرير=")[1].strip().strip("[]").split(",")
-        perspective = [p.strip() for p in perspective]
+                استخرج موضوع المقال في جملة واحدة بناءً على النص  قدم الإجابة كالتالي:
+                <العنوان>
+                قدم الاجابة في جملة واحدة عنوان واخد فقط بدون شروحات او اضافات اخرى جملة واحدة فقط
+                """
+            conversation_history = [
+                            {"role": "system", "content": "أنت مساعد متخصص في تحليل النصوص."},
+                            {"role": "user", "content": prompt}
+                        ]
+            llm_response = llm.chat.completions.create(
+                            model="gpt-4o",
+                            messages=conversation_history
+                        ).choices[0].message.content
+            topic=llm_response
+            perspective= ["غير_محدد"]
+
+        else:
+
+            topic = llm_response.split("موضوع التقرير=")[1].split("\n")[0].strip()
+            perspective = llm_response.split("منظور التقرير=")[1].strip().strip("[]").split(",")
+            perspective = [p.strip() for p in perspective]
 
 
         # Fetch URLs and content
@@ -202,6 +225,7 @@ def edit_arabic_report():
     - يحتوي على الحقول "headings" و"listItemsList" و"listItems" مكتملة وصحيحة.
     - متناسق وصالح للاستخدام بدون أي أخطاء في التنسيق.
     - يبدأ وينتهي بـ "{" و"}".
+    
                   
 ال headings  المفروض انها array of objects
 و ال output JSON headingيحمل التعديلات لذلك ال {arabic_prompt} 
@@ -234,6 +258,7 @@ def edit_arabic_report():
         cleaned_response = cleaned_response.replace('`', '').strip()
         return cleaned_response , 200
     except Exception as e:
+        edit_arabic_report()
         return jsonify({"error": str(e)}), 500
 
 @app.route("/")
