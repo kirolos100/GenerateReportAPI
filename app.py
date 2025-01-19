@@ -234,6 +234,7 @@ def edit_arabic_report():
     
                   
 ال headings  المفروض انها one only array of objects
+يجب ان الheadings تحتوي على list كبيرة التي تحتوي على listItmesList list & listItems list
 و ال output JSON headingيحمل التعديلات لذلك ال {arabic_prompt} 
 فانا لا اريد المقال بheadings بل اريد ال heading المطلوب فقط
 تاكد من كتابة ال HTML Tags بشكل صحيح
