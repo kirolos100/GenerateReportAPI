@@ -268,6 +268,31 @@ def edit_arabic_report():
         if cleaned_response.endswith('```'):
             cleaned_response = cleaned_response[:-3].strip()
         cleaned_response = cleaned_response.replace('`', '').strip()
+        arabic_prompt = f"""
+        لديك JSON به أخطاء تنسيقية أو نحوية. مهمتك هي تصحيح جميع الأخطاء وإرجاع JSON صحيح بدون أي مشاكل في الصياغة أو المخرجات. يجب أن يكون الإخراج فقط JSON صالح بدون أي شرح إضافي.
+        
+        الإدخال:
+        {cleaned_response}
+
+        الإخراج المطلوب:
+        - يجب أن يكون JSON متناسقًا وصالحًا.
+        - لا تكتب أي توضيح أو نص إضافي، فقط JSON الصحيح.
+        """
+        conversation_history = [
+            {"role": "system", "content": "أنت مساعد متخصص في تصحيح JSON وإزالة أي أخطاء تنسيقية أو برمجية."},
+            {"role": "user", "content": arabic_prompt}
+        ]
+        
+        llm_response = llm.chat.completions.create(
+            model="gpt-4o",
+            messages=conversation_history
+        ).choices[0].message.content
+        cleaned_response = llm_response.strip()
+        if cleaned_response.startswith('```json'):
+            cleaned_response = cleaned_response[len('```json'):].strip()
+        if cleaned_response.endswith('```'):
+            cleaned_response = cleaned_response[:-3].strip()
+        cleaned_response = cleaned_response.replace('`', '').strip()
         return cleaned_response , 200
     except Exception as e:
         edit_arabic_report()
