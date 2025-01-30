@@ -226,13 +226,13 @@ def edit_arabic_report():
     - قم بإرجاع المحتوى وفق الصيغة المطلوبة فقط.
 
     تأكد أن ملف JSON الناتج:
-    - يحتوي على الحقول "headings" و"listItemsList" و"listItems" مكتملة وصحيحة.
+    - يحتوي على الحقول "headings" و "Version" و "Title"و "listItemsList" و "listItems" مكتملة وصحيحة.
     - متناسق وصالح للاستخدام بدون أي أخطاء في التنسيق.
     - يبدأ وينتهي بـ "{" و"}".
     
                   
 ال headings  المفروض انها one only array of objects
-يجب ان الheadings تحتوي على list كبيرة التي تحتوي على listItmesList list & listItems list
+يجب ان الheadings تحتوي على title و version و list كبيرة التي تحتوي على listItmesList list & listItems list
 و ال output JSON headingيحمل التعديلات لذلك ال {arabic_prompt} 
 لا تنسى ال title: {arabic_prompt} ولا تنسى ال version : 1
 فانا لا اريد المقال بheadings بل اريد ال heading المطلوب فقط
